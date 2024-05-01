@@ -29,6 +29,7 @@ import {PreparedAclSubject} from './utils/acl/acl-types';
 import {PreparedRole} from './utils/acl';
 import {UISettingsMonitoring} from '../shared/ui-settings';
 import {DefaultSubjectCard, type SubjectCardProps} from './components/SubjectLink/SubjectLink';
+import type { QueryItem } from './pages/query-tracker/module/api';
 
 type HeaderItemOrPage =
     | {
@@ -355,6 +356,8 @@ export interface UIFactory {
 
     renderRolesLink(params: {cluster: string; login: string; className?: string}): React.ReactNode;
 
+    renderVisualizationResult(params: { query: QueryItem; index: number;}): React.ReactNode;
+
     getExternalSettings(params: {
         cluster: string;
         login: string;
@@ -615,6 +618,10 @@ const uiFactory: UIFactory = {
 
     renderRolesLink() {
         return undefined;
+    },
+
+    renderVisualizationResult() {
+        return null;
     },
 
     getExternalSettings() {

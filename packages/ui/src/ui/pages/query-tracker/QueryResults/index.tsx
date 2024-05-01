@@ -3,7 +3,7 @@ import block from 'bem-cn-lite';
 import {QueryItem, YQLSstatistics} from '../module/api';
 import {Tabs} from '@gravity-ui/uikit';
 import {useDispatch} from 'react-redux';
-import {QueryResultsView} from '../QueryResultsView';
+// import {QueryResultsView} from '../QueryResultsView';
 import {QueryMetaInfo} from './QueryMetaRow';
 import QueryMetaTable from '../QueryMetaTable';
 import {loadQueryResult} from '../module/query_result/actions';
@@ -19,6 +19,7 @@ import PlanActions from '../Plan/PlanActions';
 import './index.scss';
 import {ErrorTree} from './ErrorTree';
 import {QueryProgress} from './QueryResultActions/QueryProgress';
+import UIFactory from '../../../UIFactory';
 
 const b = block('query-results');
 
@@ -35,7 +36,8 @@ function QueryResultContainer({
             dispatch(loadQueryResult(activeResultParams.queryId, activeResultParams.resultIndex));
         }
     }, [activeResultParams, dispatch]);
-    return <QueryResultsView query={query} index={activeResultParams?.resultIndex || 0} />;
+    
+    return UIFactory.renderVisualizationResult({query, index: activeResultParams?.resultIndex || 0}); //<QueryResultsVisualization query={query} index={activeResultParams?.resultIndex || 0} />
 }
 
 function extractOperationIdToCluster(obj: YQLSstatistics | undefined): Map<string, string> {
