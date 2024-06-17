@@ -6,9 +6,9 @@ import {UNEXPECTED_PIPE_AXIOS_RESPONSE, pipeAxiosResponse, sendAndLogError} from
 import {getUserYTApiSetup} from '../components/requestsSetup';
 import {getPreloadedClusterUiConfig} from '../components/cluster-params';
 
-export async function chytProxyApi(req: Request, res: Response) {
+export async function strawberryProxyApi(req: Request, res: Response) {
     try {
-        await chytProxyApiImpl(req, res);
+        await strawberryProxyApiImpl(req, res);
     } catch (e: any) {
         await sendAndLogError(req.ctx, res, 500, e, {
             method: 'nodejs',
@@ -18,8 +18,8 @@ export async function chytProxyApi(req: Request, res: Response) {
     }
 }
 
-async function chytProxyApiImpl(req: Request, res: Response) {
-    const {action, ytAuthCluster: cluster} = req.params;
+async function strawberryProxyApiImpl(req: Request, res: Response) {
+    const {action, engine, ytAuthCluster: cluster} = req.params;
     const ALLOWED_ACTIONS = new Set([
         'list',
         'create',
@@ -32,29 +32,38 @@ async function chytProxyApiImpl(req: Request, res: Response) {
         'get_speclet',
     ]);
 
+    if (!engine) {
+        return sendAndLogError(req.ctx, res, 400, new Error('api type is not defined'));
+    }
+
+    const isChyt = engine === 'chyt';
+
     if (!ALLOWED_ACTIONS.has(action)) {
         return sendAndLogError(
             req.ctx,
             res,
             400,
-            new Error(`CHYT action - '${action}', is not supported`),
+            new Error(`${isChyt ? 'CHYT' : 'SPYT'} action - '${action}', is not supported`),
         );
     }
 
     const isDeveloper = req.query.isDeveloper === 'true';
 
-    const {chyt_controller_base_url: baseUrl} = await getPreloadedClusterUiConfig(
+    const {chyt_controller_base_url, livy_controller_base_url} = await getPreloadedClusterUiConfig(
         cluster,
         req.ctx,
         isDeveloper,
     );
 
+    const baseUrl = isChyt ? chyt_controller_base_url : livy_controller_base_url;
+
     if (!baseUrl) {
+        const parameter = isChyt ? 'chyt_controller_base_url' : 'livy_controller_base_url';
         return sendAndLogError(
             req.ctx,
             res,
             500,
-            new Error('//sys/@ui_config/chyt_controller_base_url is not defined'),
+            new Error(`//sys/@ui_config/${parameter} is not defined`),
         );
     }
     const {ctx} = req;
