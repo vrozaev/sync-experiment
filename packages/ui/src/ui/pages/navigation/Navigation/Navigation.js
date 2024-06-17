@@ -153,7 +153,7 @@ class Navigation extends Component {
         const {setMode, attributes, tabletErrorsCount} = this.props;
         const isACO = attributes?.type === 'access_control_object';
 
-        return [
+        const tabs = [
             {
                 value: Tab.CONSUMER,
                 title: 'Go to consumer [Alt+R]',
@@ -291,6 +291,10 @@ class Navigation extends Component {
                 counter: tabletErrorsCount,
             },
         ];
+
+        UIFactory.getNavigationExtention().extendNavigationTabs(tabs);
+
+        return tabs;
     }
 
     onTabChange = (value) => {

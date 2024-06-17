@@ -11,8 +11,9 @@ import UserAttributes from '../../../../../pages/navigation/tabs/UserAttributes/
 import TableMountConfig from '../../../../../pages/navigation/tabs/TableMountConfig/TableMountConfig';
 import {Tab} from '../../../../../constants/navigation';
 import {Fragment} from 'react';
+import UIFactory from '../../../../../UIFactory';
 
-const supportedAttributeTypes = {
+const getSupportedAttributeTypes = () => ({
     acl: ACL,
     locks: Locks,
     schema: Schema,
@@ -25,9 +26,13 @@ const supportedAttributeTypes = {
     [Tab.CONSUMER]: Consumer,
     [Tab.MOUNT_CONFIG]: TableMountConfig,
     [Tab.QUEUE]: Queue,
-};
+    ...UIFactory.getNavigationExtention().getSupportedAttributeTypes(),
+});
 
-export default (mode: string) =>
-    mode in supportedAttributeTypes
+export default (mode: string) => {
+    const supportedAttributeTypes = getSupportedAttributeTypes();
+
+    return mode in supportedAttributeTypes
         ? supportedAttributeTypes[mode as keyof typeof supportedAttributeTypes]
         : undefined;
+};

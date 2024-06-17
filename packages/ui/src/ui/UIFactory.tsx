@@ -30,6 +30,7 @@ import {PreparedRole} from './utils/acl';
 import {UISettingsMonitoring} from '../shared/ui-settings';
 import {DefaultSubjectCard, type SubjectCardProps} from './components/SubjectLink/SubjectLink';
 import type {QueryItem} from './pages/query-tracker/module/api';
+import {Tab} from './constants/navigation/index';
 
 type HeaderItemOrPage =
     | {
@@ -389,6 +390,16 @@ export interface UIFactory {
     getAclPermissionsSettings(): typeof PERMISSIONS_SETTINGS;
 
     onChytAliasSqlClick(params: {alias: string; cluster: string}): void;
+
+    getNavigationExtention(): {
+        extendSupportedTabs(params: {attributes: any; supportedTabs: Set<string>}): void;
+
+        getDefaultMode(supportedTabs: Set<string>): string;
+
+        getSupportedAttributeTypes(): Record<string, React.ComponentType>;
+
+        extendNavigationTabs(navigationTabs: {value: string; title: string}[]): void;
+    };
 }
 
 const experimentalPages: string[] = [];
@@ -662,6 +673,21 @@ const uiFactory: UIFactory = {
     },
 
     onChytAliasSqlClick() {},
+
+    getNavigationExtention() {
+        return {
+            extendSupportedTabs() {},
+
+            getDefaultMode(supportedTabs: Set<string>) {
+                return supportedTabs.has(Tab.CONSUMER) ? Tab.CONSUMER : Tab.CONTENT;
+            },
+
+            getSupportedAttributeTypes() {
+                return {};
+            },
+            extendNavigationTabs() {},
+        };
+    },
 };
 
 function configureUIFactoryItem<K extends keyof UIFactory>(k: K, redefinition: UIFactory[K]) {

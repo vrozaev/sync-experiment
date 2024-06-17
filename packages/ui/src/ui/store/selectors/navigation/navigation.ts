@@ -13,6 +13,7 @@ import {Tab} from '../../../constants/navigation/index';
 import {getTableMountConfigHasData} from '../../../store/selectors/navigation/content/table-mount-config';
 import {getAccessLogBasePath} from '../../../config';
 import {getTabletErrorsCount} from '../../../store/selectors/navigation/tabs/tablet-errors';
+import UIFactory from '../../../UIFactory';
 
 export function getNavigationPathAttributesLoadState(state: RootState) {
     return state.navigation.navigation.loadState;
@@ -110,12 +111,20 @@ export const getSupportedTabs = createSelector(
             supportedTabletErrors = [Tab.TABLET_ERRORS];
         }
 
-        return new Set([...alwaysSupportedTabs, ...supportedByAttribute, ...supportedTabletErrors]);
+        const supportedTabs = new Set([
+            ...alwaysSupportedTabs,
+            ...supportedByAttribute,
+            ...supportedTabletErrors,
+        ]);
+
+        UIFactory.getNavigationExtention().extendSupportedTabs({supportedTabs, attributes});
+
+        return supportedTabs;
     },
 );
 
 export const getDefaultMode = createSelector([getSupportedTabs], (supportedTabs) =>
-    supportedTabs.has(Tab.CONSUMER) ? Tab.CONSUMER : Tab.CONTENT,
+    UIFactory.getNavigationExtention().getDefaultMode(supportedTabs),
 );
 
 export const getEffectiveMode = createSelector([getMode, getDefaultMode], (mode, defaultMode) =>
