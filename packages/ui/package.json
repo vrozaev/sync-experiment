@@ -115,7 +115,7 @@
     "@gravity-ui/stylelint-config": "^3.0.0",
     "@gravity-ui/tsconfig": "^1.0.0",
     "@gravity-ui/uikit": "^5.31.2",
-    "@gravity-ui/unipika": "^3.0.0",
+    "@gravity-ui/unipika": "https://s3.mds.yandex.net/ytfront-overrides/gravity-ui-unipika-5.0.0.tgz",
     "@gravity-ui/yagr": "^4.0.3",
     "@reduxjs/toolkit": "^2.2.3",
     "@tanstack/react-virtual": "^3.0.0-alpha.0",
