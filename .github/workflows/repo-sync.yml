@@ -14,4 +14,5 @@ jobs:
         source_repo: "https://github.com/ytsaurus/ytsaurus-ui.git"
         source_branch: "*"
         destination_branch: "*"
+        sync_tags: "true"
         github_token: ${{ secrets.PAT }}
