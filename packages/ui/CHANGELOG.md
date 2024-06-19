@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.44.1](https://github.com/ytsaurus/ytsaurus-ui/compare/ui-v1.44.0...ui-v1.44.1) (2024-06-19)
+
+
+### Bug Fixes
+
+* **System:** now we are trying make a request to another primary masters if first one did not responded correctrly [[#529](https://github.com/ytsaurus/ytsaurus-ui/issues/529)] ([fc25ad4](https://github.com/ytsaurus/ytsaurus-ui/commit/fc25ad493adb410ae66876ca7746dd3665f6a04a))
+
 ## [1.44.0](https://github.com/ytsaurus/ytsaurus-ui/compare/ui-v1.43.0...ui-v1.44.0) (2024-06-13)
 
 
