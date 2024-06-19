@@ -6,6 +6,8 @@ on:
 jobs:
   repo-sync:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - uses: actions/checkout@v4
       with:
@@ -17,4 +19,3 @@ jobs:
         source_branch: "*"
         destination_branch: "*"
         sync_tags: "true"
-        github_token: ${{ secrets.PAT }}
